@@ -17,7 +17,7 @@ Plotly is an open source graphing library similar to matplotlib that allows you 
 
         iplot(data, filename='bar')
 
-# Python 3 Plotly Bar Graph
+![Plotly Bar Graph ](images/python_3_plotly_chloropleth-map2-600x400.png)
 
 In this Python 3 Data visualization tutorial you will learn how to visualize the World Population data from World Bank using plotly bar graphs, plotly scatter plots and plotly choropleth maps. So let's get started.
 
