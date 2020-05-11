@@ -4,8 +4,8 @@ What is Plotly?
 
 Plotly is an open source graphing library similar to matplotlib that allows you to create both online and offline graphs in Python 3. Below is example of a simple offline Bar Graph with Plotly
 
-        import plotly.offline import iplot
-        import plotly.graph_objs as go
+        `import plotly.offline import iplot
+        import plotly.graph_objs as go`
 
 # initiate the Plotly Notebook mode to use plotly.offline and inject the plotly.js source files into the notebook.
 init_notebook_mode(connected=True)
