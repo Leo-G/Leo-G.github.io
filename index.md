@@ -1,6 +1,6 @@
 ## Welcome to GitHub Pages
 
-You can use the [How to visualise Data in Python](https://github.com/Leo-G/Leo-G.github.io/blob/master/How-to-Visualise-Data-in-Python-3-with-Plotly.md) to maintain and preview the content for your website in Markdown files.
+You can use the [How to visualise Data in Python](Leo-G.github.io/How-to-Visualise-Data-in-Python-3-with-Plotly) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
