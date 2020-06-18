@@ -1,3 +1,7 @@
+layout: page
+title: "How-to-Visualise-Data-in-Python-3-with-Plotly"
+permalink: /How-to-Visualise-Data-in-Python-3-with-Plotly.md/
+
 In this Python 3 tutorial I will describe how you can create data visualizations in python 3 with Plotly an open source graphing library.
 
 # What is Plotly?
