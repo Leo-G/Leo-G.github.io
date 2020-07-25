@@ -1,0 +1,90 @@
+Whenever I setup a Linux VPS, the first thing I do is install a firewall. I have noticed an increase in attacks on my servers, especially from China. I use
+Config Server Firewall (CFG) and Login Failure deamon (LFD) because they are easy to set up and provide additional features like suspicious file reporting and system monitoring.
+
+Installation of Config Server Firewall
+
+Before your proceed, be sure to remove any firewall software already installed.
+
+[leo@linux-vps ~]# wget http://configserver.com/free/csf.tgz
+[leo@linux-vps ~]# tar -xzf csf.tgz
+[leo@linux-vps ~]# cd csf
+[leo@linux-vps ~]# sudo sh install.sh
+
+The script is written in perl,so you will need to check for the required perl modules.
+
+perl /usr/local/csf/bin/csftest.pl
+
+You will get some features are not installed but that's ok as long as you do not get any fatal errors.
+
+Configure CSF 
+Modify the configuration to include only ports used by your applications
+
+[leo@linux-vps ~]# sudo vim /etc/csf/csf.conf
+# Allow incoming TCP ports
+TCP_IN = "22,80"
+# Allow outgoing TCP ports
+TCP_OUT = "25"
+#add your email for alerts
+LF_ALERT_TO = "youremail@domain.com"
+#Remove from testing mode
+TESTING = "0"
+Common services and their port numbers
+
+22: ssh
+25: postfix
+80: http
+Start CSF
+
+[leo@linux-vps ~]sudo csf -s
+As long as there are no fatal config errors you can ignore the below warning.
+
+WARNING* RESTRICT_SYSLOG is disabled. See SECURITY WARNING in /etc/csf/csf.conf
+CSF config files through which you can allow and deny IP addresses
+
+csf.allow       - a list of IP's and CIDR addresses that should always be allowed
+                  through the firewall
+csf.deny        - a list of IP's and CIDR addresses that should never be allowed
+                  through the firewall
+csf.ignore      - a list of IP's and CIDR addresses that lfd should ignore and not
+                  not block if detected
+
+The difference between "csf.allow" and "csf.ignore" is that "csf.allow" rules overwrite "csf.deny".
+
+You may want to whitelist your IP address by adding it to "/etc/csf/csf.allow"
+
+You can also whitelist processes and users by modifying "/etc/csf/csf.pignore" as follows
+
+exe:/usr/sbin/nginx
+user:leo
+You need to restart CSF for the changes to reflect
+
+[leo@linux-vps ~]sudo csf -r
+CSF commands to start, stop and disable csf
+
+h,  --help
+              Show this message
+-l, --status
+ List/Show the IPv4 iptables configuration
+-l6, --status6
+ List/Show the IPv6 ip6tables configuration
+-s, --start
+ Start the firewall rules
+-f, --stop
+ Flush/Stop firewall rules (Note: lfd may restart csf)
+-r, --restart
+ Restart firewall rules
+ -x, disable
+ 
+ -e, enable
+Uninstalling CSF is simple as well.
+
+sh /etc/csf/uninstall.sh
+Update : For list of Linux System administration and Programming tutorials and cheatsheets you can download the DevopsWiki 
+
+I recommend you also Monitor your Server with Monit and Install a VPN server to secure your web traffic.
+
+How to install a VPN server on Linux
+
+How to Monitor your Linux Server with Monit
+
+source http://configserver.com/free/csf/readme.txt
