@@ -1,0 +1,13 @@
+Now our application is presented with www.cranzgot.co.za. The following sequence of lookups takes place to resolve this name into an IP address. This procedure is called host name resolution and the algorithm that performs this operation is called the resolver.
+
+1. The application checks certain special databases on the local machine. If it can get an answer directly from them, it proceeds no further.
+2. The application looks up a geographically close name server from the local machine's configuration file. Let's say this machine is called ns.
+3. The application queries ns with `` www.cranzgot.co.za?''.
+4. ns determines whether that IP has been recently looked up. If it has, there is no need to ask further, since the result would be stored in a local cache.
+5. ns checks whether the domain is local. That is, whether it is a computer about which it has direct information. In this case, this would only be true if the ns were cranzgot.co.za's very own name server.
+6. ns strips out the TLD (top level domain) .za. It queries a root name server, asking what name server is responsible for .za. The answer will be ucthpx.uct.ac.za of IP address 137.158.128.1.
+7. ns strips out the next highest domain co.za It queries 137.158.128.1, asking what name server is responsible for .co.za. The answer will be secdns1.posix.co.za of IP address 160.124.112.10.
+8. ns strips out the next highest domain cranzgot.co.za. It queries 160.124.112.10, asking what name server is responsible for cranzgot.co.za. The answer will be pizza.cranzgot.co.za of IP address 196.28.123.1.
+9. ns queries 196.28.123.1 asking for the IP address of www.cranzgot.co.za. The answer will be 160.123.176.1.
+10. ns returns the result to the application.
+11. ns stores each of these results in a local cache with an expiration date, to avoid having to look them up a second time.
