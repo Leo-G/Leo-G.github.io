@@ -1,0 +1,1 @@
+A--A record ,  B-- Britney Spears, C--Cname, D--DNS, E--Ethernet, F--Firefox,  G--Google, H--Hosting,  I--Internet,   J--Joomla,   K--K-lite , L--Linux,  M--Mircosoft,   N--Networking,  O--Open Source,  P--Password,   Q--Query,R--Red Hat, S--Social Networking,  T--Text,  U--Username,  V--Verisign,W--World Wide Web,  X--X-Internet,Y--Yahoo, Z--Zip
