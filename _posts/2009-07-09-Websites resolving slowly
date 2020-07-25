@@ -1,0 +1,11 @@
+So you wanna know why your website is resolving slowly. A very simple way to find out is by pinging the server and doing a tracert. A better way to do it is with the pathping command. It's simple again open command prompt and type "pathping yourdomainname.com" without the inverted commas :-).
+
+Pathping does a ping on every path taken to reach the websit and provides you with combination of ping and tracert results.
+
+Another useful command is tracetcp which send tcp packets over a network instead of icmp packets which is why sometimes when you do a tracert you will see the * sign.
+
+Well for tracetcp you will have to follow the instructions in the link below
+
+http://tracetcp.sourceforge.net/
+
+You can also check if your website from mutliple networks which would indicate if the problem is with your network or worldwide. one such site that provides this service is http://internetsupervision.com
