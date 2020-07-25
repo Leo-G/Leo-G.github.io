@@ -1,0 +1,85 @@
+The recent vulnerability in bash, got me running to update bash. It’s easy when you have maybe one or two Linux servers, but what do you do if you have 100’s or even thousands or servers? You need to use a server configuration and management tool like puppet. However, instead of using the command line, I wanted a GUI tool where I could select the servers or server group and select an action.
+That is where I found Foreman, A opensource tool which not only handles configuration of your servers but also does provisioning. Foreman is easy to install, opensource, has community based support and a good deal of documentation.
+
+ 
+
+Installing Foreman on CentOS
+
+Please ensure that you perform these steps on a fresh install on CentOS which has the EPEL repository.
+
+[leo@centos-vps]$ sudo yum -y install http://yum.theforeman.org/releases/latest/el6/x86_64/foreman-release-1.6.0-1.el6.noarch.rpm
+[leo@centos-vps]$sudo yum install foreman-installer
+
+Debian users refer http://theforeman.org/manuals/1.6/quickstart_guide.html
+
+As I said earlier, Foreman is easy to install, just run the installer below and it will install both foreman and puppet.
+
+[root@puppet ~]# foreman-installer
+Installing             Done                                               [100%] [....................................................................................]
+  Success!
+  * Foreman is running at https://puppet.yourlinuxvps.net
+      Initial credentials are admin / passwd
+  * Foreman Proxy is running at https://puppet.yourlinuxvps.net:8443
+  * Puppetmaster is running at port 8140
+  The full log is at /var/log/foreman-installer/foreman-installer.log
+
+Log into https://puppet.yourlinuxvps.net, with the creds in the output of the above command.
+
+foreman gui
+
+puppet gui
+
+Adding a Host to Foreman 
+You can add a host to foreman by installing the puppet client, signing the certificate and then running the command below.
+
+[leo@centos-vps]$sudo puppet agent --test
+
+Click on Hosts-->All hosts to view your host.
+puppet gui
+
+Click on your hostname and then click on facts, this will bring up all info about your host.
+
+puppet gui
+
+Installing a puppet module on a host 
+Run the below command on the foreman host.
+
+[leo@centos-vps]$sudo puppet module  install -i /etc/puppet/environments/production/modules
+  httpd
+
+Goto your host, click on edit and then “Puppet classes”
+
+puppet gui
+
+Select httpd and click submit. You should be able to see “httpd” on the yaml tab on the next page.
+
+Run the puppet client on the host and you should be able to see the results of a successful install in reports
+
+[leo@centos-vps]$ sudo puppet agent --test
+
+puppet gui
+
+Although I found creating a class from foreman a bit confusing, I was able to create a class via commandline and then import the class into foreman.
+
+Click on Configure--Puppet Classes--Import from puppet.yourlinuxvps.net once you have created and added your class in /etc/puppet/environments/production/modules.
+
+puppet gui
+
+I could not select all hosts and add a class to them at the same time, But I like that foreman was easy to install and had a good user interface which made it easy to view reports on each hosts.
+
+If you need to setup Puppet only then I recommend you read
+
+A simple way to install Puppet
+
+If you are more comfortable with Commands then I recommend you install the Saltstack.
+
+Getting Started with the Saltstack
+
+If any of you have used foreman or other opensource based GUI then feel free to share your feedback in the comments section.
+
+Versions
+Puppet v2.7.25
+Centos 6.5
+
+Reference
+http://theforeman.org/manuals/1.6/quickstart_guide.html
