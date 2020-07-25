@@ -1,0 +1,143 @@
+Uncompress multiple .zip .gz or .bz2ubuntu-10-04-desktop-customization-guide
+
+.zip
+
+for file in *.zip; do unzip "${file}"; done
+
+.gz
+
+gunzip *.gz
+
+.bz2
+
+bunzip2 *.bz2
+
+tar.gz
+
+for file in *.tar.gz; do tar zxf "${file}"; done
+
+tar.bz2
+
+for file in *.tar.bz2; do tar jxf "${file}"; done
+
+Shell script usage
+
+If you use one of the snippets that uses a for loop in a script with an arbitrary number of archives, you may want to set the shell to use "nullglobs". For instance, normally *.tar.gz will evaluate to *.tar.gz when no files were found that match this wildcard, rather than evaluating to an empty string. As a result 'tar' is executed with this string as a parameter. To avoid this, you can request that the shell uses nullglobs with:
+
+shopt -s nullglob
+
+If no matches were found, the shell will return an empty string, and the for loop is terminated.
+
+Search and Replace in multiple files.
+
+Example: Replace every instance of yourdomain with mydomain in all .html files in current path using Perl.
+
+perl -pi -e "s/yourdomain/mydomain/g;" *.html
+
+Same as above but make a copy of original file for backup.
+
+perl -pi -e.bak "s/yourdomain/mydomain/g;" *.html
+
+Or, if you prefer a lightweight solution, you can use sed:
+
+sed -i 's/yourdomain/mydomain/g' *.html
+
+(Add -r if you want to use extended regular expressions with sed.)
+
+This Tips & Trix will cover banners for SSH and the console prompt.
+
+About legal issues
+
+An often forgotten area in system protection is an well formed banner text.
+
+Since the publication of the "Computer Misuse Act 1990" it has been strongly recommended that computers display a banner before allowing users to log in. The Act stipulates that an offense of unauthorized access can only be committed if the offender knew at the time that the access he intended to obtain was unauthorized. Login banners are the best way to achieve this. The "Regulation of Investigatory Powers Act 2000" also requires information to be given to computer users: login banners may also be a good way to do this dissemination.
+
+/etc/motd
+
+Console login The content of this file is shown after the user has logged in, and immediately before the shell is started.
+
+/etc/issue.net
+
+Network login
+
+OBS By default is this disabled in ssh!
+
+The content of this file is shown when a ssh session is connected and before the authorization.
+
+To enable this in ssh you have to follow this simple steps:
+
+1. Create a /etc/issue.net file and fill it with the desired context
+
+2. Edit /etc/ssh/sshd_config, to look like this Banner /etc/issue.net
+
+3. Restart sshd, service sshd restart
+
+FTP Greeting Banner
+
+This topic is covered in the "Deployment Guide" for CentOS 5.1 in section 43.2.6.1. "FTP Greeting Banner"
+
+*
+
+[javascript:void(0);/*1234255103621*/ http://www.centos.org/docs/5/html/5.1/Deployment_Guide/s2-server-ftp-gbanner.html]
+
+TCP Wrappers and Connection Banners
+
+This topic is covered in the Deployment Guide" for CentOS 5.1 in section 43.2.1.1.1. "TCP Wrappers and Connection Banners"
+
+*
+
+[javascript:void(0);/*1234255117465*/ http://www.centos.org/docs/5/html/5.1/Deployment_Guide/s3-server-tcp-banner.html]
+
+Sample banner texts
+
+Example #1
+
+Unauthorized access to this machine is prohibited
+Press if you are not an authorized user
+
+Example #2
+
+********************************************************************
+* *
+* This system is for the use of authorized users only. Usage of *
+* this system may be monitored and recorded by system personnel. *
+* *
+* Anyone using this system expressly consents to such monitoring *
+* and is advised that if such monitoring reveals possible *
+* evidence of criminal activity, system personnel may provide the *
+* evidence from such monitoring to law enforcement officials. *
+* *
+********************************************************************
+
+Fancy banners
+
+linux_logo
+
+"Create nice ASCII Art logos"
+
+linux_logon is a tool that creates ASCII Art banners. The default ASCII art can be seen in the example below or other created from a template file. It does also add system stats like kernel version, CPU version, RAM and utilization values.
+
+Example
+
+#####
+#######
+@ ##O#O##
+###### @@# #VVVVV#
+## # ## VVV ##
+## @@@ ### #### ### ### ##### ###### # ##
+## @ @# ### ## ## ## ### ## # ##
+## @ @# ## ## ## ## ### # ###
+## @@# ## ## ## ## ### QQ# ##Q
+## # @@# ## ## ## ## ## ## QQQQQQ# #QQQQQQ
+## ## @@# # ## ## ### ### ## ## QQQQQQQ# #QQQQQQQ
+############ ### #### #### #### ### ##### ###### QQQQQ#######QQQQQ
+Linux Version 2.6.18-53.1.4.el5, Compiled #1 SMP Fri Nov 30 00:45:16 EST 2007
+One 2.19GHz AMD AMD Turion(tm) 64 Mobile ML-40 Processor, 256M RAM, 4394.20 Bogomips Total
+localhost.localdomain
+
+An alternative to linux_logo is FIGlet.
+
+Programs that could be used to create ASCII/ANSI logos
+
+http://dag.wieers.com/rpm/packages/linux_logo/
+http://www.deater.net/weave/vmwprod/linux_logo/
