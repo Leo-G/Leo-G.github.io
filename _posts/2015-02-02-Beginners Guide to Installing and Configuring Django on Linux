@@ -1,0 +1,141 @@
+Django is a web framework for python. It provides you with the basic components that are required to build your website like HTML templates, User Authentication, Web Server etc.
+In this tutorial I will describe how you can install Django 1.7 on Linux with the latest version of Python and PostgreSQl.
+
+Software Versions
+Linux(CentOS 6.5)
+Python 3.4
+Django 1.7
+PostgresSQL 9
+
+Step 1: Install Python 3.4 on your Linux machine.
+Ubuntu/Mint/Raspberry Pi users can skip this step as these distro's generally have the latest versions of python (check by running "python --version")
+
+[leo@django~]$ wget https://www.python.org/ftp/python/3.4.2/Python-3.4.2.tgz
+[leo@django~]$ tar -xvzf Python-3.4.2.tgz
+[leo@django~]$ cd Python-3.4.2
+[leo@django~]$ ./configure
+[leo@django~]$ make
+[leo@django~]$  sudo make altinstall
+[leo@django~]$   python --version
+Python 3.4.2
+
+Step: 2 Install Django on Linux
+
+Before you install Django create a virtual environment, where the project dependencies will be installed and will not conflict with system dependencies.
+
+[leo@django~]$ pyvenv-3.4 venv3.4
+[leo@django~]$ source venv3.4/bin/activate
+[leo@django~]$ pip install django
+
+Step 3: Install PostgreSQL 9.4 on Linux
+
+Django recommends the use of PostgreSQL for it's database operations. If you are not comfortable with Postgres, then you can configure MySQL or you can leave the settings to default and use SQLlite as well. Ubuntu/Mint/RasberryPi users can follow the PostgreSQL installation guide at http://www.postgresql.org/download/linux/ubuntu/
+
+[leo@django~]$ sudo vim /etc/yum.repos.d/CentOS-Base.repo
+#add the below line to the base and update sections
+exclude=postgresql*
+[leo@django~]$ sudo yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+[leo@django~]$ sudo yum install postgresql94-server postgresql94-contrib postgresql-devel
+[leo@django~]$ sudo /usr/pgsql-9.4/bin/postgresql94-setup initdb
+or
+
+
+[leo@django~]$ sudo  service postgresql-9.4 initdb
+
+
+[leo@django~]$ sudo service postgresql-9.4 start
+
+Create a Database and assign a user to it.
+
+[leo@django~]$ sudo  su - postgres
+ [postgres@django~]$ createdb yourdbname
+ [postgres@django~]$ createuser -P yourdbuser   #createuser will prompt you for a password, enter it twice.
+ [postgres@django~]$ psql
+ postgres=# GRANT ALL PRIVILEGES ON DATABASE yourdbname TO yourdbuser;
+ postgres=# \q
+
+Now try to connect via the command prompt
+
+[leo@django~]$ psql -U yourdbusername -h localhost -W yourdbname
+
+After you enter you password you will get the below error
+“FATAL: Ident authentication failed for user”
+
+This is because by default PostgreSQL uses ‘ident’ authentication i.e it checks if the username exists on the system. You need to change authentication mode to ‘md5’ as we do not want to add a system user.
+Modify the settings in "pg_hba.conf" to use 'md5' authentication.
+
+[leo@django~]$ sudo  vim /var/lib/pgsql/9.4/data/pg_hba.conf
+# "local" is for Unix domain socket connections only
+local all all md5
+# IPv4 local connections:
+host all all 127.0.0.1/32 md5
+# IPv6 local connections:
+host all all ::1/128 md5
+[leo@django~]$ sudo service postgresql-9.4 restart
+Install the PostgreSQL driver psycopg2
+
+[leo@django~]$PATH=$PATH:/usr/pgsql-9.4/bin/ pip install psycopg2 
+Step 4: Create your first Django website
+
+[leo@django]$ django-admin.py startproject website
+[leo@django]$ cd website
+[leo@django website]$ vim website/settings.py
+DATABASES = {
+ 'default': {
+ 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+ 'NAME':'yourdbname',
+ 'USER': 'yourdbusername',
+ 'PASSWORD': 'yourdbpassword',
+ 'HOST': 'localhost', 
+ 'PORT': '',
+ }
+}
+[leo@django website]$ python website/manage.py syncdb #Enter a admin user name and password for Django
+#Run the server
+[leo@django website]$ python website/manage.py runserver 1.2.3.4:8000
+
+You should be able to access the site at the url http://1.2.3.4:8000 and the admin panel at http://1.2.3.4:8000/admin.
+install django 1.7 on linux
+
+To add your own index template add the following code to settings.py
+
+[leo@django website]$ vim website/settings.py
+TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
+
+Create a templates folder and add your index.html file in it along with the default admin templates.
+
+[leo@django website]$ mkdir templates
+[leo@django ~]$ cp -rv venv3.4/lib64/python3.4/site-packages/django/contrib/admin/templates/*  website/templates/
+[leo@django~]$vim website/index.html
+<p> Hi this is Leo and This is my first website on Linux </p>
+
+Finally modify your url.py file to look as follows.
+
+[leo@django~]$ vim website/website/urls.py
+from django.conf.urls import patterns, include, url
+from django.contrib import admin
+from django.views.generic.base import TemplateView
+urlpatterns = patterns('',
+ # Examples:
+ # url(r'^$', 'blog.views.home', name='home'),
+ # url(r'^blog/', include('blog.urls')),
+url(r'^admin/', include(admin.site.urls)),
+ url(r'^$', TemplateView.as_view(template_name='index.html'), name="home"),
+)
+
+Now run your server
+
+[leo@django website]$ python website/manage.py runserver 1.2.3.4:8000
+Performing system checks...
+System check identified no issues (0 silenced).
+February 02, 2015 - 10:44:18
+Django version 1.7.4, using settings 'website.settings'
+Starting development server at http://1.2.3.4:8000/
+Quit the server with CONTROL-C.
+[02/Feb/2015 10:44:21] "GET / HTTP/1.1" 200 1759
+
+Now you can design your own templates or you can use pre-built ones from http://mezzanine.jupo.org/.
+
+Here are some references to help you design your own template.
+https://docs.djangoproject.com/en/1.7/topics/templates/#templates
+https://docs.djangoproject.com/en/1.7/ref/templates/api/
